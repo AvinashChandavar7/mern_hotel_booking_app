@@ -1,1 +1,1 @@
-export const DB_NAME = "chai_backend" as string;
+export const DB_NAME = "mern_hotel_booking_app" as string;
