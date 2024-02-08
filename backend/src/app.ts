@@ -9,9 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 
-app.get("/api/test", async (req: Request, res: Response) => {
-  res.json({ message: "hello Backend" })
-});
+
+import userRoutes from "./routes/users.routes"
+
+app.use("/api/v1/users", userRoutes)
 
 
 export { app };
