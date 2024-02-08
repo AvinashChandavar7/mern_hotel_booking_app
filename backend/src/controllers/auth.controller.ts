@@ -49,6 +49,13 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 
+const tokenValidation = asyncHandler(async (req, res) => {
+  return res.status(200)
+    .json(new ApiResponse(200, { userId: req.userId }, "Token Validation"));
+})
+
+
 export {
-  loginUser
+  loginUser,
+  tokenValidation
 }
