@@ -5,10 +5,14 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx'
 import './index.css'
 
+import { QueryProvider } from './lib/QueryProvider.tsx';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <QueryProvider>
+        <App />
+      </QueryProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
