@@ -3,11 +3,14 @@ import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 
 import User from "../models/users";
+import { validateAndHandleErrors } from "../validation/auth.validation";
 
 
 
 
 const registerUser = asyncHandler(async (req, res) => {
+  validateAndHandleErrors(req, res);
+
   const { firstName, lastName, email, password } = req.body;
 
 
