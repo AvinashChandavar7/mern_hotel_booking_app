@@ -1,14 +1,16 @@
-// import { Router } from "express";
+import { Router } from "express";
 
 
-// import {
-//   registerUser,
-// } from "../controllers/auth.controller";
+import {
+  loginUser,
+} from "../controllers/auth.controller";
+
+import { loginValidation } from "../validation/auth.validation";
 
 
-// const router = Router();
+const router = Router();
 
 
-// router.post('/register', registerUser);
+router.post('/login', loginValidation, loginUser);
 
-// export default router;
+export default router;

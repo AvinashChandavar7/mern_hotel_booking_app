@@ -11,7 +11,9 @@ app.use(cors());
 
 
 import userRoutes from "./routes/users.routes"
+import authRoutes from "./routes/auth.routes"
 
+app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", userRoutes)
 
 
