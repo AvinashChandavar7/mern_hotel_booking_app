@@ -24,7 +24,7 @@ export const AppContextProvider = (
   const { isError } = useQuery(
     "validateToken",
     apiClient.validateToken,
-    { retry: false }
+    { retry: false, refetchOnWindowFocus: false }
   );
 
   console.log(isError)
