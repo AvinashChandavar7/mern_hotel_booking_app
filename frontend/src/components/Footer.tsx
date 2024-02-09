@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 const Footer = () => {
   return (
     <div className='py-10 bg-blue-800'>
-      <div className="container flex items-center justify-between mx-auto gap-15">
-        <span className="text-2xl font-bold tracking-tight text-white">
+      <div className="container flex flex-col items-center justify-between mx-auto md:flex-row gap-15">
+        <span className="font-bold tracking-tight text-white text-md md:text-2xl">
           <Link to="/">MernHolidays.com</Link>
         </span>
         <span className='flex gap-4 font-bold tracking-tight text-white'>

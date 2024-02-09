@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAppContext } from "../contexts/AppContext";
 
@@ -48,57 +48,70 @@ const Login = () => {
   )
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-      <h2 className="text-3xl font-bold">Login </h2>
+    <>
+      <div className="flex items-center justify-center p-3 lg:px-16 lg:py-5">
 
 
-      <label className="flex-1 text-sm font-bold text-gray-700">
-        Email
-
-        <input type="text"
-          className="w-full px-2 py-1 font-normal border rounded "
-          {...register("email", { required: "This field is required" })}
-        />
-
-        {errors.email && (
-          <span className="text-red-500">{errors.email.message}</span>
-        )}
-      </label>
+        <form className="flex flex-col w-full gap-5" onSubmit={onSubmit}>
+          <h2 className="text-3xl font-bold">Login </h2>
 
 
-      <label className="flex-1 text-sm font-bold text-gray-700">
-        Password
+          <label className="flex-1 text-sm font-bold text-gray-700">
+            Email
 
-        <input type="password"
-          className="w-full px-2 py-1 font-normal border rounded "
-          {...register("password",
-            {
-              required: "This field is required",
-              minLength: {
-                value: 6,
-                message: "password must be at least 6 characters"
-              }
-            })}
-        />
+            <input type="text"
+              className="w-full px-2 py-1 font-normal border rounded "
+              {...register("email", { required: "This field is required" })}
+            />
 
-        {errors.password && (
-          <span className="text-red-500">{errors.password.message}</span>
-        )}
-      </label>
+            {errors.email && (
+              <span className="text-red-500">{errors.email.message}</span>
+            )}
+          </label>
 
 
-      <span>
-        <button
-          type="submit"
-          className="p-2 text-xl font-bold text-white bg-blue-600 hover:bg-blue-500">
-          Login
-        </button>
-      </span>
+          <label className="flex-1 text-sm font-bold text-gray-700">
+            Password
+
+            <input type="password"
+              className="w-full px-2 py-1 font-normal border rounded "
+              {...register("password",
+                {
+                  required: "This field is required",
+                  minLength: {
+                    value: 6,
+                    message: "password must be at least 6 characters"
+                  }
+                })}
+            />
+
+            {errors.password && (
+              <span className="text-red-500">{errors.password.message}</span>
+            )}
+          </label>
+
+
+          <span className="flex flex-col items-center justify-between gap-5 md:flex-row ">
+            <span className="items-start text-sm">
+              Not Registered?&nbsp;
+              <Link to="/register" className="text-blue-600 underline hover:text-purple-500">Create an account here</Link>
+            </span>
+
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-xl font-bold text-white bg-blue-600 rounded-md md:w-fit hover:bg-blue-500">
+              Login
+            </button>
+          </span>
 
 
 
 
-    </form>
+        </form>
+      </div>
+
+    </>
   )
 }
 
