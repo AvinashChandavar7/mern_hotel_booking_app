@@ -16,6 +16,14 @@ npx tsc --init
 npm init playwright@latest
 ```
 
+```js
+// Build Command
+cd frontend && npm install && npm run build && cd ../backend && npm run build
+
+// Start Command
+cd backend && npm start
+```
+
 ```ts
 {
   "compilerOptions": {
