@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import "dotenv/config";
 import cookieParser from "cookie-parser";
+import path from 'path';
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.static("public"))
+// app.use(express.static("public"))
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use(cookieParser());
 
