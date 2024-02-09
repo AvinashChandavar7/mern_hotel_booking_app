@@ -9,14 +9,18 @@ export interface UserType extends Document {
   password: string;
   firstName: string;
   lastName: string;
+  timestamp: Date;
 }
 
-const userSchema = new Schema({
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true, },
-  password: { type: String, required: [true, "Password is required"], },
-  firstName: { type: String, required: true, trim: true, index: true, },
-  lastName: { type: String, required: true, trim: true, index: true, }
-});
+const userSchema = new Schema(
+  {
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true, },
+    password: { type: String, required: [true, "Password is required"], },
+    firstName: { type: String, required: true, trim: true, index: true, },
+    lastName: { type: String, required: true, trim: true, index: true, }
+  },
+  { timestamps: true }
+);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {

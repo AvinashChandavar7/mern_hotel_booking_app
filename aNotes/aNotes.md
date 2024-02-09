@@ -7,3 +7,7 @@ npm i -D @types/cors @types/express @types/node ts-node typescript nodemon
 npm i bcryptjs jsonwebtoken
 npm i -D @types/bcryptjs @types/jsonwebtoken
 ```
+
+```bash
+npm init playwright@latest
+```
