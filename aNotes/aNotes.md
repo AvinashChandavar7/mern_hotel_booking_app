@@ -9,6 +9,10 @@ npm i -D @types/bcryptjs @types/jsonwebtoken
 ```
 
 ```bash
+npm i cloudinary
+```
+
+```bash
 npx tsc --init
 ```
 
