@@ -9,7 +9,7 @@ npm i -D @types/bcryptjs @types/jsonwebtoken
 ```
 
 ```bash
-npm i cloudinary
+npm i cloudinary multer
 ```
 
 ```bash

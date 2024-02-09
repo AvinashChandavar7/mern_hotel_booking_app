@@ -23,9 +23,12 @@ app.use(cookieParser());
 
 import userRoutes from "./routes/users.routes"
 import authRoutes from "./routes/auth.routes"
+import myHotelRoutes from "./routes/my-hotels.routes"
+
 
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/my-hotels", myHotelRoutes)
 
 
 export { app };
