@@ -30,5 +30,11 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/my-hotels", myHotelRoutes)
 
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(
+    path.join(__dirname, "../../frontend/dist/index.html")
+  );
+})
+
 
 export { app };
