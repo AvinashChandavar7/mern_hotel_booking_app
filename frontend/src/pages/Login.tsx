@@ -59,7 +59,7 @@ const Login = () => {
           <label className="flex-1 text-sm font-bold text-gray-700">
             Email
 
-            <input type="text"
+            <input type="email"
               className="w-full px-2 py-1 font-normal border rounded "
               {...register("email", { required: "This field is required" })}
             />
