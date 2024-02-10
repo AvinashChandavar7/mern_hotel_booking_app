@@ -19,6 +19,7 @@ test('should allow the user to register ', async ({ page }) => {
   await page.locator("[name=firstName]").fill("aaaaa");
   await page.locator("[name=lastName]").fill("aaaaa");
   await page.locator("[name=email]").fill(testEmail);
+  // await page.locator("[name=email]").fill("aaaa@gmail.com");
   await page.locator("[name=password]").fill("123456");
   await page.locator("[name=confirmPassword]").fill("123456");
 
