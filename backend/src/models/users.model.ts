@@ -35,7 +35,7 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
 }
 
 userSchema.methods.generateRefreshToken = function () {
-  const payload = { _id: this._id };
+  const payload = { userId: this._id };
   const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
   const refreshTokenExpiry = process.env.REFRESH_TOKEN_EXPIRY as string;
 

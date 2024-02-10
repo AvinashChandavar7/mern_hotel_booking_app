@@ -17,7 +17,7 @@ router.post(
   '/',
   verifyToken,
   myHotelsValidation,
-  upload.array("imagesFiles", 6),
+  upload.array("imageFiles", 6),
   myHotels
 );
 

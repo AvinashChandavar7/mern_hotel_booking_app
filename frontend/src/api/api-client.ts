@@ -8,6 +8,8 @@ const LOGIN_URL = `${API_BASE_URL}/api/v1/auth/login`;
 const LOGOUT_URL = `${API_BASE_URL}/api/v1/auth/logout`;
 const VALIDATE_TOKEN_URL = `${API_BASE_URL}/api/v1/auth/validate-token`;
 
+const ADD_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
+
 
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch(REGISTER_URL, {
@@ -46,8 +48,6 @@ export const validateToken = async () => {
     credentials: "include",
   });
 
-  // const data = await response.json();
-
   if (!response.ok) {
     throw new Error("Token Invalid");
   }
@@ -61,10 +61,24 @@ export const logOut = async () => {
     credentials: "include",
   });
 
-  // const data = await response.json();
-
   if (!response.ok) {
     throw new Error("Error during LogOut");
+  }
+
+  return response.json();
+}
+
+
+export const addMyHotel = async (hotelFormData: FormData) => {
+  const response = await fetch(ADD_HOTEL_URL, {
+    method: 'POST',
+    credentials: "include",
+    body: (hotelFormData),
+  });
+
+
+  if (!response.ok) {
+    throw new Error("Failed to add my hotel");
   }
 
   return response.json();

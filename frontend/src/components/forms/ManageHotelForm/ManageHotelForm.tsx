@@ -22,7 +22,12 @@ export type HotelFormData = {
   imageFiles: FileList;
 }
 
-const ManageHotelForm = () => {
+type ManageHotelFormProps = {
+  onSave: (hotelFormData: FormData) => void;
+  isLoading: boolean;
+}
+
+const ManageHotelForm = ({ onSave, isLoading }: ManageHotelFormProps) => {
 
   const fromMethods = useForm<HotelFormData>({
     defaultValues: {
@@ -34,8 +39,7 @@ const ManageHotelForm = () => {
       childCount: 0,
       starRating: 5,
       pricePerNight: 5000,
-      facilities: ["Family Rooms",
-        "Free WiFi",],
+      facilities: ["Family Rooms", "Free WiFi",],
       type: "Motel"
     }
   })
@@ -68,6 +72,9 @@ const ManageHotelForm = () => {
         formData.append("imageFiles", imageFile);
       });
 
+
+    onSave(formData);
+
   });
 
 
@@ -84,9 +91,10 @@ const ManageHotelForm = () => {
         <span className="flex justify-end w-full my-5">
           <button
             type="submit"
-            className="px-8 py-2 w-[100%] md:w-[150px] font-semibold text-white bg-blue-600 rounded-md"
+            disabled={isLoading}
+            className="px-8 py-2 w-[100%] md:w-[150px] font-semibold text-white bg-blue-600 rounded-md disabled:bg-gray-500 "
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </span>
 
