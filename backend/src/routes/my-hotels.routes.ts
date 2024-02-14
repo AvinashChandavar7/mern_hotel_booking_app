@@ -1,7 +1,8 @@
 import { Router } from "express";
 
 import {
-  myHotels
+  myHotels,
+  getAllHotels
 } from "../controllers/my-hotels.controller";
 
 import { myHotelsValidation } from "../validation/my-hotel.validation";
@@ -20,5 +21,7 @@ router.post(
   upload.array("imageFiles", 6),
   myHotels
 );
+
+router.get("/", verifyToken, getAllHotels)
 
 export default router;
