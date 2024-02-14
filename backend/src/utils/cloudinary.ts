@@ -8,16 +8,17 @@ cloudinary.config({
 
 
 // Update processImageUpload function
-export const processImageUpload = async (image: any) => {
+export const uploadImages = async (imageFiles: Express.Multer.File[]) => {
   try {
-    const b64 = Buffer.from(image.buffer).toString("base64");
-    const dataURI = "data:" + image.mimetype + ";base64," + b64;
+    const uploadPromises = imageFiles.map(async (image) => {
+      const b64 = Buffer.from(image.buffer).toString("base64");
+      const dataURI = "data:" + image.mimetype + ";base64," + b64;
+      const response = await cloudinary.uploader.upload(dataURI);
+      return response.url;
+    });
 
-    const response = await cloudinary.uploader.upload(dataURI);
-
-    // return response.secure_url; // Use secure_url from Cloudinary response
-
-    return response.url;
+    const imageUrls = await Promise.all(uploadPromises);
+    return imageUrls;
 
   } catch (error) {
     console.error('Error uploading image to Cloudinary:', error);

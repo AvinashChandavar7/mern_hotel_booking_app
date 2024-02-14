@@ -8,7 +8,10 @@ const LOGOUT_URL = `${API_BASE_URL}/api/v1/auth/logout`;
 const VALIDATE_TOKEN_URL = `${API_BASE_URL}/api/v1/auth/validate-token`;
 
 const ADD_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
+const UPDATE_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
+
 const FETCH_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
+const FETCH_HOTEL_BY_ID_URL = `${API_BASE_URL}/api/v1/my-hotels`;
 
 
 export const register = async (formData: RegisterFormData) => {
@@ -85,6 +88,22 @@ export const addMyHotel = async (hotelFormData: FormData) => {
 }
 
 
+export const updateMyHotel = async (hotelFormData: FormData) => {
+  const response = await fetch(`${UPDATE_HOTEL_URL}/${hotelFormData.get("hotelId")}`, {
+    method: 'PUT',
+    credentials: "include",
+    body: (hotelFormData),
+  });
+
+
+  if (!response.ok) {
+    throw new Error("Failed to add my hotel");
+  }
+
+  return response.json();
+}
+
+
 
 export type HotelType = {
   _id: string;
@@ -121,6 +140,29 @@ export const fetchMyHotels = async (): Promise<HotelType[]> => {
   const hotelsData = responseData?.data?.hotels;
 
   if (!hotelsData || !Array.isArray(hotelsData)) {
+    throw new Error("Invalid response data structure");
+  }
+
+  return hotelsData;
+};
+
+
+export const fetchMyHotelById = async (hotelId: string): Promise<HotelType> => {
+  const response = await fetch(`${FETCH_HOTEL_BY_ID_URL}/${hotelId}`, {
+    method: 'GET',
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error fetching my hotel");
+  }
+
+  const responseData = await response.json();
+
+  // Assuming the data structure has changed
+  const hotelsData = responseData?.data?.hotel;
+
+  if (!hotelsData) {
     throw new Error("Invalid response data structure");
   }
 

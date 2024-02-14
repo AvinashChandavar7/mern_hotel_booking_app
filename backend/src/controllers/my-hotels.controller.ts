@@ -2,7 +2,7 @@ import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 
-import { processImageUpload, } from "../utils/cloudinary";
+import { uploadImages, } from "../utils/cloudinary";
 import Hotel, { HotelType } from "../models/hotel.model";
 
 const myHotels = asyncHandler(async (req, res) => {
@@ -18,8 +18,7 @@ const myHotels = asyncHandler(async (req, res) => {
 
   // console.log(imagesFiles, newHotel)
 
-  const uploadPromises = imagesFiles.map(processImageUpload);
-  const imageUrls = await Promise.all(uploadPromises);
+  const imageUrls = await uploadImages(imagesFiles)
 
   newHotel.imageUrls = imageUrls;
   newHotel.lastUpdated = new Date();
@@ -51,9 +50,55 @@ const getAllHotels = asyncHandler(async (req, res) => {
 })
 
 
+const getHotelById = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+  const id = req.params.id.toString();
+
+  const hotel = await Hotel.findOne({ _id: id, userId })
+
+  if (!hotel) {
+    throw new ApiError(400, "Hotel not Found");
+  }
+
+
+  return res.status(201)
+    .json(new ApiResponse(201, { hotel }, "User successfully getting Hotel By Id"));
+})
+
+const updateMyHotel = asyncHandler(async (req, res) => {
+
+  const hotelId = req.params.hotelId.toString();
+
+  const updateHotel: HotelType = req.body;
+  updateHotel.lastUpdated = new Date();
+
+  const imagesFiles = req.files as Express.Multer.File[];
+
+  const hotel = await Hotel.findOneAndUpdate(
+    { _id: hotelId, userId: req.userId },
+    updateHotel,
+    { new: true }
+  )
+
+  const uploadImageUrls = await uploadImages(imagesFiles)
+
+  hotel.imageUrls = [
+    ...uploadImageUrls,
+    ...(updateHotel.imageUrls || [])
+  ];
+
+  await hotel.save();
+
+  return res.status(201)
+    .json(new ApiResponse(201, { hotel }, "User successfully getting Hotel By Id"));
+})
+
+
 
 export {
   myHotels,
-  getAllHotels
+  getAllHotels,
+  getHotelById,
+  updateMyHotel
 }
 

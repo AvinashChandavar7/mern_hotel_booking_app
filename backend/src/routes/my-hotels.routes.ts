@@ -2,7 +2,9 @@ import { Router } from "express";
 
 import {
   myHotels,
-  getAllHotels
+  getAllHotels,
+  getHotelById,
+  updateMyHotel
 } from "../controllers/my-hotels.controller";
 
 import { myHotelsValidation } from "../validation/my-hotel.validation";
@@ -22,6 +24,18 @@ router.post(
   myHotels
 );
 
-router.get("/", verifyToken, getAllHotels)
+router.get("/", verifyToken, getAllHotels);
+
+router.get("/:id", verifyToken, getHotelById);
+
+router.put(
+  '/:hotelId',
+  verifyToken,
+  myHotelsValidation,
+  upload.array("imageFiles", 6),
+  updateMyHotel
+);
+
+
 
 export default router;
