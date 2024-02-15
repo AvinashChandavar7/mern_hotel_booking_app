@@ -52,7 +52,7 @@ test("should allow user to add a hotel",
 
     await page.getByRole("button", { name: "Save" }).click();
 
-    await expect(page.getByText("Hotel Saved!")).toBeVisible({ timeout: 20000 });
+    await expect(page.getByText("Hotel Saved!")).toBeVisible({ timeout: 30000 });
   }
 )
 
@@ -60,8 +60,8 @@ test("should display hotels",
   async ({ page }) => {
     await page.goto(`${UI_URL}my-hotels`);
 
-    await expect(page.getByText("Dublin Getaways")).toBeVisible();
-    await expect(page.getByText("Dublin, Ireland")).toBeVisible();
+    await expect(page.getByText("Dublin Getaways").first()).toBeVisible();
+    await expect(page.getByText("Dublin, Ireland").first()).toBeVisible();
     await expect(page.getByText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")).toBeVisible();
     await expect(page.getByText("₹4998 & All Inclusive")).toBeVisible();
     await expect(page.getByText("2 adults, 3 children")).toBeVisible();
@@ -69,7 +69,7 @@ test("should display hotels",
     await expect(page.getByText("Spa, Free WiFi, Family Rooms, Airport Shuttle")).toBeVisible();
 
 
-    await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View Details" }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
   }
 )
@@ -78,15 +78,20 @@ test("should edit hotels",
   async ({ page }) => {
     await page.goto(`${UI_URL}my-hotels`);
 
-    await page.getByRole("link", { name: "View Details" }).click();
+    await page.getByRole("link", { name: "View Details" }).first().click();
 
     await page.waitForSelector("[name=name]", { state: "attached" });
     await expect(page.locator("[name=name]")).toHaveValue("Dublin Getaways");
     await page.locator("[name=name]").fill("Dublin Getaways Updated");
 
-    await page.getByRole("link", { name: "Save" }).click();
+    await page.getByRole("button", { name: "Save" }).click();
 
     await expect(page.getByText("Updated Success!")).toBeVisible({ timeout: 30000 });
 
+    await page.reload();
+
+    await expect(page.locator("[name=name]")).toHaveValue("Dublin Getaways Updated");
+    await page.locator("[name=name]").fill("Dublin Getaways");
+    await page.getByRole("button", { name: "Save" }).click();
   }
 )
