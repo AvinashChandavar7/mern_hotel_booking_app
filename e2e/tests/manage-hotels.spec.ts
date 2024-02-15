@@ -26,18 +26,19 @@ test("should allow user to add a hotel",
   async ({ page }) => {
     await page.goto(`${UI_URL}add-hotel`);
 
-    await page.locator("[name=name]").fill("Test Hotel");
-    await page.locator("[name=city]").fill("Test city");
-    await page.locator("[name=country]").fill("Test country ");
-    await page.locator("[name=description]").fill("Test description for the Test Hotel");
+    await page.locator("[name=name]").fill("Dublin Getaways");
+    await page.locator("[name=city]").fill("Dublin");
+    await page.locator("[name=country]").fill("Ireland");
+    await page.locator("[name=description]").fill("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
 
-    await page.locator("[name=pricePerNight]").fill("1000 ");
-    await page.selectOption("select[name=starRating]", "3");
+    await page.locator("[name=pricePerNight]").fill("4998 ");
+    await page.selectOption("select[name=starRating]", "2");
 
 
     await page.getByText("Budget").click();
     await page.getByLabel("Free Wifi").check();
     await page.getByLabel("Spa").check();
+    await page.getByLabel("Airport Shuttle").check();
 
     await page.locator("[name=adultCount]").fill("5");
     await page.locator("[name=childCount]").fill("2");
@@ -70,5 +71,22 @@ test("should display hotels",
 
     await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
+  }
+)
+
+test("should edit hotels",
+  async ({ page }) => {
+    await page.goto(`${UI_URL}my-hotels`);
+
+    await page.getByRole("link", { name: "View Details" }).click();
+
+    await page.waitForSelector("[name=name]", { state: "attached" });
+    await expect(page.locator("[name=name]")).toHaveValue("Dublin Getaways");
+    await page.locator("[name=name]").fill("Dublin Getaways Updated");
+
+    await page.getByRole("link", { name: "Save" }).click();
+
+    await expect(page.getByText("Updated Success!")).toBeVisible({ timeout: 30000 });
+
   }
 )
