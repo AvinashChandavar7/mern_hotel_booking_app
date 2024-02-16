@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "../constants/config";
 import { SignInFormData } from "../pages/Login";
 import { RegisterFormData } from "../pages/Register";
+import { HotelSearchResponse, HotelType, SearchParams } from "../types/types";
 
 const REGISTER_URL = `${API_BASE_URL}/api/v1/users/register`;
 const LOGIN_URL = `${API_BASE_URL}/api/v1/auth/login`;
@@ -12,6 +13,8 @@ const UPDATE_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
 
 const FETCH_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
 const FETCH_HOTEL_BY_ID_URL = `${API_BASE_URL}/api/v1/my-hotels`;
+
+const SEARCH_HOTEL_URL = `${API_BASE_URL}/api/v1/hotels/search`;
 
 
 export const register = async (formData: RegisterFormData) => {
@@ -105,23 +108,6 @@ export const updateMyHotel = async (hotelFormData: FormData) => {
 
 
 
-export type HotelType = {
-  _id: string;
-  userId: string;
-  name: string;
-  city: string;
-  country: string;
-  description: string;
-  type: string;
-  facilities: string[];
-  imageUrls: string[];
-  adultCount: number;
-  childCount: number;
-  pricePerNight: number;
-  starRating: number;
-  lastUpdated: Date;
-  timestamp: Date;
-}
 
 
 export const fetchMyHotels = async (): Promise<HotelType[]> => {
@@ -165,6 +151,32 @@ export const fetchMyHotelById = async (hotelId: string): Promise<HotelType> => {
   if (!hotelsData) {
     throw new Error("Invalid response data structure");
   }
+
+  return hotelsData;
+};
+
+
+
+export const searchHotels = async (searchParams: SearchParams): Promise<HotelSearchResponse> => {
+
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("destination", searchParams.destination || "")
+  queryParams.append("checkIn", searchParams.checkIn || "")
+  queryParams.append("checkOut", searchParams.checkOut || "")
+  queryParams.append("adultCount", searchParams.adultCount || "")
+  queryParams.append("childCount", searchParams.childCount || "")
+  queryParams.append("page", searchParams.page || "")
+
+  const response = await fetch(`${SEARCH_HOTEL_URL}?${queryParams}`);
+
+  if (!response.ok) {
+    throw new Error("Error fetching my hotel");
+  }
+
+  const responseData = await response.json();
+
+  const hotelsData = responseData?.data;
 
   return hotelsData;
 };

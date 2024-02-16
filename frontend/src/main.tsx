@@ -7,15 +7,18 @@ import './index.css'
 
 import { QueryProvider } from './lib/QueryProvider.tsx';
 import { AppContextProvider } from './contexts/AppContext.tsx';
+import { SearchContextProvider } from './contexts/SearchContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryProvider>
         <AppContextProvider>
-          <App />
+          <SearchContextProvider>
+            <App />
+          </SearchContextProvider>
         </AppContextProvider>
       </QueryProvider>
     </BrowserRouter>
   </React.StrictMode>,
-)
+);
