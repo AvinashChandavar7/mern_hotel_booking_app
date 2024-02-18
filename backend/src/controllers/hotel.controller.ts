@@ -7,6 +7,7 @@ import { HotelSearchResponse } from "../shared/types";
 
 const searchHotel = asyncHandler(async (req, res) => {
 
+  const query = constructorSearchQuery(req.query);
 
   const pageSize = 5;
   const pageNumber = parseInt(
@@ -20,8 +21,10 @@ const searchHotel = asyncHandler(async (req, res) => {
 
   const skip = (pageNumber - 1) * pageSize;
 
-  const hotels = await Hotel.find()
-    .skip(skip).limit(pageSize);
+  const hotels = await Hotel
+    .find(query)
+    .skip(skip)
+    .limit(pageSize);
 
   if (!hotels) {
     throw new ApiError(400, "Invalid Hotel")
@@ -46,6 +49,27 @@ const searchHotel = asyncHandler(async (req, res) => {
   return res.status(201)
     .json(new ApiResponse(201, response, "User successfully Search"));
 });
+
+const constructorSearchQuery = (queryParams: any) => {
+  let constructedQuery: any = {};
+
+  if (queryParams.destination) {
+    constructedQuery.$or = [
+      { city: new RegExp(queryParams.destination, "i") },
+      { country: new RegExp(queryParams.destination, "i") },
+    ];
+  }
+
+  if (queryParams.adultCount) {
+    constructedQuery.adultCount = { $gte: parseInt(queryParams.adultCount) }
+  }
+
+  if (queryParams.childCount) {
+    constructedQuery.childCount = { $gte: parseInt(queryParams.childCount) }
+  }
+
+  return constructedQuery;
+}
 
 
 export {
