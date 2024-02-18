@@ -167,6 +167,20 @@ export const searchHotels = async (searchParams: SearchParams): Promise<HotelSea
   queryParams.append("adultCount", searchParams.adultCount || "")
   queryParams.append("childCount", searchParams.childCount || "")
   queryParams.append("page", searchParams.page || "")
+  queryParams.append("maxPrice", searchParams.maxPrice || "")
+  queryParams.append("sortOption", searchParams.sortOption || "")
+
+  searchParams.facilities?.forEach(
+    (facility) => queryParams.append("facilities", facility)
+  );
+
+  searchParams.types?.forEach(
+    (type) => queryParams.append("types", type)
+  );
+
+  searchParams.stars?.forEach(
+    (star) => queryParams.append("stars", star)
+  );
 
   const response = await fetch(`${SEARCH_HOTEL_URL}?${queryParams}`);
 

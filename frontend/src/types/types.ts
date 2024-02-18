@@ -24,6 +24,12 @@ export type SearchParams = {
   adultCount?: string;
   childCount?: string;
   page?: string;
+  maxPrice?: string;
+  sortOption?: string;
+  types?: string[];
+  stars?: string[];
+  facilities?: string[];
+
 }
 
 export type HotelSearchResponse = {
