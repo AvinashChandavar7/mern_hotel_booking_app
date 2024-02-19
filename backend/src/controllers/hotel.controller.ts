@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 
 import Hotel from "../models/hotel.model";
 import { HotelSearchResponse } from "../shared/types";
+import { validateAndHandleErrors } from "../validation/auth.validation";
 
 const searchHotel = asyncHandler(async (req, res) => {
 
@@ -115,6 +116,24 @@ const constructorSearchQuery = (queryParams: any) => {
 }
 
 
+const getHotelDetailsById = asyncHandler(async (req, res) => {
+
+  validateAndHandleErrors(req, res);
+  const id = req.params.id.toString();
+
+  const hotel = await Hotel.findById(id);
+
+  if (!hotel) {
+    throw new ApiError(400, "Hotel not Found");
+  }
+
+  return res.status(201)
+    .json(new ApiResponse(201, { hotel }, "User successfully getting Hotel By Id"));
+});
+
+
+
 export {
-  searchHotel
+  searchHotel,
+  getHotelDetailsById
 }
