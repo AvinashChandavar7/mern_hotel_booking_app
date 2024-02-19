@@ -80,7 +80,7 @@ const Search = () => {
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5 ">
 
       {/* Filter */}
-      <div className="sticky p-5 m-2 border border-blue-300 rounded-lg md:m-0 h-fit top-10">
+      <div className="p-5 m-2 border border-blue-300 rounded-lg lg:sticky md:m-0 h-fit top-10">
         <div className="space-y-5">
           <h3 className="pb-5 text-lg font-semibold border-b border-blue-300">
             Filter by:
@@ -111,10 +111,21 @@ const Search = () => {
       {/* Card */}
       <div className="flex flex-col gap-5">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between m-2 md:m-0">
           <span className="text-xl font-bold">
-            {hotelData?.pagination.total} Hotels Found
-            {search.destination ? `in ${search.destination} ` : ""}
+            <span className="text-blue-600 ">
+              {hotelData?.pagination.total}
+            </span>
+
+            &nbsp;Hotels Found&nbsp;
+            {/* {search.destination ? ` in ${search.destination} ` : ""} */}
+
+            {search.destination && typeof search.destination === 'string' && (
+              <span>
+                in
+                <span className="text-blue-600"> {search.destination}</span>
+              </span>
+            )}
           </span>
 
           <div>
