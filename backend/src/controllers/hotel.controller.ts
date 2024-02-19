@@ -96,16 +96,23 @@ const constructorSearchQuery = (queryParams: any) => {
   }
 
   if (types) {
-    constructedQuery.types = { $in: Array.isArray(types) ? types : [types] }
+    constructedQuery.type = { $in: Array.isArray(types) ? types : [types] }
   }
 
   if (stars) {
-    const startRatings = Array.isArray(stars)
+    const startRatings = stars && Array.isArray(stars)
       ? stars.map((star: string) => parseInt(star))
-      : parseInt(stars)
+      : [parseInt(stars)]
 
     constructedQuery.startRating = { $in: startRatings };
+    console.log(constructedQuery.startRating)
   }
+
+  // if (stars) {
+  //   const starRating = parseInt(stars.toString());
+  //   constructedQuery.startRating = { $eq: starRating };
+  //   console.log(constructedQuery.startRating)
+  // }
 
   if (maxPrice) {
     constructedQuery.pricePerNight = { $lte: parseInt(maxPrice).toString() };
