@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useAppContext } from "../contexts/AppContext";
 
@@ -13,7 +13,10 @@ export type SignInFormData = {
 
 
 const Login = () => {
+
   const navigate = useNavigate();
+  const location = useLocation();
+
   const queryClient = useQueryClient();
   const { showToast } = useAppContext();
 
@@ -33,7 +36,7 @@ const Login = () => {
     onSuccess: async () => {
       showToast({ message: "Login Success!", type: "SUCCESS" });
       await queryClient.invalidateQueries("validateToken")
-      navigate("/");
+      navigate(location.state?.from?.pathname || "/");
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });

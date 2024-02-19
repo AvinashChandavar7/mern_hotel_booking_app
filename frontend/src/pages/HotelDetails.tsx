@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom"
 import * as apiClient from "../api/api-client"
+import GuestInfo from "../components/forms/GuestInfoForm/GuestInfo";
 
 const HotelDetails = () => {
   const { hotelId } = useParams();
@@ -73,9 +74,11 @@ const HotelDetails = () => {
             {hotelDetails.description}
           </div>
 
-          <div className="p-2 border h-fit">
-            {/* <GuestInfo/> */}
-            GuestInfo
+          <div className="p-2 border rounded-md h-fit">
+            <GuestInfo
+              hotelId={hotelDetails._id}
+              pricePerNight={hotelDetails.pricePerNight}
+            />
           </div>
         </div>
 
