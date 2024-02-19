@@ -1,3 +1,14 @@
+export type UserType = {
+  _id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  timestamp: Date;
+
+}
+
+
 export type HotelType = {
   _id: string;
   userId: string;
@@ -15,6 +26,8 @@ export type HotelType = {
   lastUpdated: Date;
   timestamp: Date;
 }
+
+
 
 
 export type SearchParams = {

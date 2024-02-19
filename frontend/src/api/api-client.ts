@@ -1,12 +1,14 @@
 import { API_BASE_URL } from "../constants/config";
 import { SignInFormData } from "../pages/Login";
 import { RegisterFormData } from "../pages/Register";
-import { HotelSearchResponse, HotelType, SearchParams } from "../types/types";
+import { HotelSearchResponse, HotelType, SearchParams, UserType } from "../types/types";
 
 const REGISTER_URL = `${API_BASE_URL}/api/v1/users/register`;
 const LOGIN_URL = `${API_BASE_URL}/api/v1/auth/login`;
 const LOGOUT_URL = `${API_BASE_URL}/api/v1/auth/logout`;
 const VALIDATE_TOKEN_URL = `${API_BASE_URL}/api/v1/auth/validate-token`;
+
+const CURRENT_USER_URL = `${API_BASE_URL}/api/v1/users/current-user`;
 
 const ADD_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
 const UPDATE_HOTEL_URL = `${API_BASE_URL}/api/v1/my-hotels`;
@@ -17,6 +19,28 @@ const FETCH_HOTEL_BY_ID_URL = `${API_BASE_URL}/api/v1/my-hotels`;
 const SEARCH_HOTEL_URL = `${API_BASE_URL}/api/v1/hotels/search`;
 const DETAILS_HOTEL_URL = `${API_BASE_URL}/api/v1/hotels`;
 
+
+export const fetchCurrentUser = async (): Promise<UserType> => {
+  const response = await fetch(CURRENT_USER_URL, {
+    method: 'GET',
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData);
+  }
+
+  const hotelsData = responseData?.data.user;
+
+  if (!hotelsData) {
+    throw new Error("Invalid response data structure");
+  }
+
+  return hotelsData;
+};
 
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch(REGISTER_URL, {

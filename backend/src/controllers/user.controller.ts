@@ -44,9 +44,24 @@ const registerUser = asyncHandler(async (req, res) => {
   return res.status(200)
     .cookie("auth_Token", token, options)
     .json(new ApiResponse(200, { user: user, token }, "User successfully login"));
-})
+});
+
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const userId = req.userId;
+
+  const user = await User.findById(userId).select("-password");
+
+  if (!user) {
+    throw new ApiError(400, "Invalid user")
+  }
+
+  return res.status(200)
+    .json(new ApiResponse(200, { user }, "get User Details successfully "));
+});
 
 
 export {
-  registerUser
+  registerUser,
+  getCurrentUser
 }

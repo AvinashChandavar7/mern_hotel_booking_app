@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker"
 import { useSearchContext } from "../../contexts/SearchContext"
 import "react-datepicker/dist/react-datepicker.css"
 import { useNavigate } from "react-router-dom";
-
+import { BsCalendarDate } from "react-icons/bs";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -25,7 +25,18 @@ const SearchBar = () => {
     );
 
     navigate("/search");
+
+
   }
+
+  const handleClear = () => {
+    // Clear all form fields
+    setDestination("");
+    setCheckIn(new Date());
+    setCheckOut(new Date());
+    setAdultCount(1);
+    setChildCount(0);
+  };
 
   const minDate = new Date();
   const maxDate = new Date();
@@ -47,7 +58,7 @@ const SearchBar = () => {
         />
       </div>
 
-      <div className="flex gap-2 px-2 py-1 bg-white rounded-sm">
+      <div className="flex items-center flex-1 gap-2 px-2 py-1 bg-white rounded-sm">
         <label className="flex items-center">
           Adults:
           <input
@@ -85,6 +96,10 @@ const SearchBar = () => {
           placeholderText="Check-in Date"
           className="py-2 bg-white w-[100px] text-center rounded-sm min-w-full focus:outline-none"
           wrapperClassName="min-w-full"
+          isClearable
+          showIcon
+          icon={<BsCalendarDate />}
+
         />
       </div>
 
@@ -101,6 +116,10 @@ const SearchBar = () => {
           placeholderText="Check-out Date"
           className="py-2 bg-white w-[100px] text-center rounded-sm min-w-full focus:outline-none"
           wrapperClassName="min-w-full"
+          isClearable
+          showIcon
+          icon={<BsCalendarDate />}
+
         />
       </div>
 
@@ -109,7 +128,10 @@ const SearchBar = () => {
         <button className="h-full w-full md:min-w-[55%] px-2 py-1.5 text-xl font-bold text-white bg-blue-600 rounded-sm hover:bg-blue-500">
           Search
         </button>
-        <button className="h-full w-full md:min-w-[40%] px-2 py-1.5 text-xl font-bold text-blue-600  bg-white hover:opacity-90 rounded-sm">
+        <button
+          type="button"
+          onClick={handleClear}
+          className="h-full w-full md:min-w-[40%] px-2 py-1.5 text-xl font-bold text-blue-600  bg-white hover:opacity-90 rounded-sm">
           Clear
         </button>
       </div>
