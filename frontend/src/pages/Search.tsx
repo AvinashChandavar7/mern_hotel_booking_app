@@ -139,7 +139,7 @@ const Search = () => {
 
         {
           hotelData?.data.map((hotel) => (
-            <SearchResultCard hotel={hotel} key={hotel._id} />
+            <SearchResultCard hotel={hotel} key={`${hotel._id}-${hotel.userId}`} />
           ))
         }
 

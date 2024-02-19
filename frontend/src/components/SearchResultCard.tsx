@@ -71,7 +71,7 @@ const SearchResultCard = ({ hotel }: SearchResultCardProps) => {
           {/* Chips */}
           <div className="flex flex-wrap items-center gap-1 lg:flex-nowrap">
             {hotel.facilities.slice(0, 3).map((facility) => (
-              < span className="px-3 py-2 text-xs font-bold text-blue-600 rounded-md bg-blue-50 whitespace-nowrap" >
+              < span className="px-3 py-2 text-xs font-bold text-blue-600 rounded-md bg-blue-50 whitespace-nowrap" key={facility} >
                 {facility}
               </span>
             ))}

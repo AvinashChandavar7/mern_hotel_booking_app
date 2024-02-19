@@ -15,7 +15,7 @@ const FacilitiesFilter = (
       <h4 className="mb-2 font-semibold text-md">Facilities</h4>
       <div className="grid grid-cols-2 gap-1 pb-5 border-b border-blue-300 sm:grid-cols-3 lg:grid-cols-1">
         {hotelFacilities.map((facility) => (
-          <label className="flex flex-row items-center space-x-1">
+          <label className="flex flex-row items-center space-x-1" key={facility}>
             <input
               type="checkbox"
               className="rounded"
