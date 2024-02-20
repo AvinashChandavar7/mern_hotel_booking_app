@@ -73,7 +73,7 @@ const Search = () => {
     );
   };
 
-  console.log(hotelData);
+
 
 
   return (

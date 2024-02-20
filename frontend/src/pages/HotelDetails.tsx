@@ -12,7 +12,7 @@ const HotelDetails = () => {
     { enabled: !!hotelId }
   );
 
-  console.log(hotelDetails)
+
 
   if (!hotelDetails) {
     return <>Not Found Details</>
@@ -49,7 +49,7 @@ const HotelDetails = () => {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {
             hotelDetails.imageUrls.map((image) => (
-              <div className="h-[300px]">
+              <div className="h-[300px]" key={hotelDetails.name}>
                 <img src={image} alt={hotelDetails.name}
                   className="object-cover object-center w-full h-full rounded-md"
                   loading="lazy"

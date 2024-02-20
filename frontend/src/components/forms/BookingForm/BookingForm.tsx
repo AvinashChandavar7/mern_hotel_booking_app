@@ -1,30 +1,119 @@
 import { useForm } from "react-hook-form";
-import { UserType } from "../../../types/types"
+import { useMutation } from "react-query";
+import { useParams } from "react-router-dom";
+import { StripeCardElement } from "@stripe/stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
-type BookingFormProps = {
+
+import * as apiClient from "../../../api/api-client";
+
+import { useAppContext } from "../../../contexts/AppContext";
+import { useSearchContext } from "../../../contexts/SearchContext";
+
+import { PaymentIntentResponse, UserType } from "../../../types/types"
+
+export type BookingFormProps = {
   currentUser: UserType;
+  paymentIntent: PaymentIntentResponse;
+
 }
 
-type BookingFormDataProps = {
+export type BookingFormDataProps = {
   firstName: string;
   lastName: string;
   email: string;
+
+  adultCount: number;
+  childCount: number;
+  checkIn: string;
+  checkOut: string;
+  hotelId: string;
+  paymentIntentId: string;
+  totalCost: number;
 }
 
-const BookingForm = ({ currentUser }: BookingFormProps) => {
+const BookingForm = (
+  { currentUser, paymentIntent }: BookingFormProps
+) => {
 
-  const {
-    register,
-    handleSubmit
-  } = useForm<BookingFormDataProps>({
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const search = useSearchContext();
+  const { showToast } = useAppContext();
+  const { hotelId } = useParams();
+
+
+  console.log(paymentIntent)
+
+  // const { mutate: bookRoom, isLoading } = useMutation(
+  //   apiClient.createRoomBooking,
+  //   {
+  //     onSuccess: () => {
+  //       console.log("Booking Saved!");
+  //       showToast({ message: "Booking Saved!", type: "SUCCESS" });
+  //     },
+  //     onError: () => {
+  //       console.log("Error saving booking");
+  //       showToast({ message: "Error saving booking", type: "ERROR" });
+  //     },
+  //   }
+  // );
+
+  const { mutate: bookRoom, isLoading } = useMutation(
+    apiClient.createRoomBooking,
+    {
+      onSuccess: () => {
+        showToast({ message: "Booking Saved!", type: "SUCCESS" });
+      },
+      onError: () => {
+        showToast({ message: "Error saving booking", type: "ERROR" });
+      },
+    }
+  );
+
+
+  const { register, handleSubmit } = useForm<BookingFormDataProps>({
     defaultValues: {
       firstName: currentUser.firstName || "",
       lastName: currentUser.lastName || "",
       email: currentUser.email || "",
+
+      adultCount: search.adultCount,
+      childCount: search.childCount,
+      checkIn: search.checkIn.toISOString(),
+      checkOut: search.checkOut.toISOString(),
+      hotelId: hotelId,
+      paymentIntentId: paymentIntent.paymentIntentId,
+      totalCost: paymentIntent.totalCost
     }
   });
 
-  const onSubmit = async () => { }
+  const onSubmit = async (formData: BookingFormDataProps) => {
+    if (!stripe || !elements) {
+      console.error("Stripe or elements is not initialized.");
+      return;
+    }
+
+    const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement) as StripeCardElement,
+      },
+    });
+
+    console.log("result", result);
+    console.log("result", result.paymentIntent);
+    console.log("result", result.paymentIntent?.status);
+    console.log("result", result.paymentIntent?.id);
+
+
+    if (result.paymentIntent?.status === "succeeded") {
+      console.log("paymentIntentId", result.paymentIntent.id)
+      bookRoom({ ...formData, paymentIntentId: result.paymentIntent.id });
+    }
+
+    // console.log(formData)
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}
@@ -62,8 +151,49 @@ const BookingForm = ({ currentUser }: BookingFormProps) => {
           />
         </label>
       </div>
+
+      <div className="space-y-2">
+
+        <h2 className="text-xl font-semibold">
+          Your Price Summary
+        </h2>
+
+        <div className="p-4 bg-blue-100 rounded-md">
+          <div>
+            Total Cost : ₹{paymentIntent?.totalCost?.toFixed(2)}
+          </div>
+
+          <div className="text-xs">
+            Includes taxes and Charges
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold">
+          Payment Details
+        </h2>
+
+        <CardElement
+          id="payment-element"
+          className="p-2 text-sm border rounded-md"
+        />
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          // disabled={isLoading}
+          type="submit"
+          className="px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-500 text-md disabled:bg-gray-500"
+        >
+          {isLoading ? "Saving..." : "Confirm Booking"}
+        </button>
+      </div>
+
+
     </form>
   )
 }
 
 export default BookingForm
+

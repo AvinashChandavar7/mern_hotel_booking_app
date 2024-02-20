@@ -59,7 +59,6 @@ const ManageHotelForm = (
   }, [hotel, reset]);
 
   const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
-    // console.log(formDataJson);
 
     const formData = new FormData();
 
