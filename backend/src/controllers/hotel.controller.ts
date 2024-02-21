@@ -135,6 +135,24 @@ const getHotelDetailsById = asyncHandler(async (req, res) => {
 });
 
 
+const getAllHotel = asyncHandler(async (req, res) => {
+
+  ;
+
+  const hotel = await Hotel.find().sort("-lastUpdated");
+
+  if (!hotel) {
+    throw new ApiError(400, "Hotel not Found");
+  }
+
+  return res.status(201)
+    .json(new ApiResponse(201, { hotel }, "User successfully getting Hotel By Id"));
+});
+
+
+
+
+
 // 1. total Cost  2. hotelId  3.userId
 const handlePaymentIntent = asyncHandler(async (req, res) => {
 
@@ -253,9 +271,12 @@ const handleBookings = asyncHandler(async (req, res) => {
 });
 
 
+
+
 export {
   searchHotel,
   getHotelDetailsById,
   handlePaymentIntent,
-  handleBookings
+  handleBookings,
+  getAllHotel
 }

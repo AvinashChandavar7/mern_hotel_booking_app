@@ -10,6 +10,7 @@ import Search from "./pages/Search"
 import HotelDetails from "./pages/HotelDetails"
 import Booking from "./pages/Booking"
 import MyBookings from "./pages/MyBookings"
+import Home from "./pages/Home"
 
 const App = () => {
 
@@ -17,7 +18,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout><p>Home Page</p></Layout>} />
+      <Route path="/" element={<Layout><Home /></Layout>} />
       <Route path="/search" element={<Layout><Search /></Layout>} />
       <Route path="/detail/:hotelId" element={<Layout><HotelDetails /></Layout>} />
 
