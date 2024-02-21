@@ -23,6 +23,8 @@ const DETAILS_HOTEL_URL = `${API_BASE_URL}/api/v1/hotels`;
 const CREATE_PAYMENT_INTENT_URL = `${API_BASE_URL}/api/v1/hotels`;
 const CREATE_ROOM_BOOKING_URL = `${API_BASE_URL}/api/v1/hotels`;
 
+const FETCH_MY_BOOKING_URL = `${API_BASE_URL}/api/v1/bookings`;
+
 
 export const fetchCurrentUser = async (): Promise<UserType> => {
   const response = await fetch(CURRENT_USER_URL, {
@@ -275,3 +277,25 @@ export const createRoomBooking = async (formData: BookingFormDataProps) => {
 };
 
 
+export const fetchMyBookings = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${FETCH_MY_BOOKING_URL}}`, {
+    method: 'GET',
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error fetching my hotel");
+  }
+
+  const responseData = await response.json();
+
+  // Assuming the data structure has changed
+  const hotelsData = responseData?.data;
+
+  if (!hotelsData) {
+    throw new Error("Invalid response data structure");
+  }
+
+  return hotelsData;
+
+}
