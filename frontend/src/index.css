@@ -19,3 +19,13 @@ input::-webkit-outer-spin-button {
 ::-webkit-scrollbar-thumb {
   background-color: #1640d6;
 }
+
+/* Define your custom styles for dark mode */
+.dark {
+  @apply bg-[#020020]  text-white transition-all ease-in duration-200;
+}
+
+/* Define your custom styles for light mode */
+.light {
+  @apply text-gray-900 transition-all duration-200 ease-in bg-white;
+}
